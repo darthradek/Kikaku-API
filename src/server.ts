@@ -11,6 +11,15 @@ import Logging from './library/Logging';
 
 const router = express();
 
+//SECTION: Setting up swagger
+// swagger deps
+const swaggerUi = require('swagger-ui-express');
+const yaml = require('yamljs');
+// setup swagger
+const swaggerDefinition = yaml.load('./swagger.yaml');
+router.use('/kikaku/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
+
+
 //SECTION: Setting up MongoDB connections
 mongoose
     .connect(config.mongo.url, { retryWrites: true, w: 'majority' })
