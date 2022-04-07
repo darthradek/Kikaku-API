@@ -4,9 +4,9 @@ info:
   description: MongoDB ExpressJS NodeJS REST API
   version: 1.0.0
 servers:
-  - url: 
+  - url: https://kikaku.herokuapp.com/api/
     description: Heroku remote server
-  - url: http://localhost:4000/ping
+  - url: http://localhost:4000/api/
     description: Localhost development server
 components:
   securitySchemes:
@@ -16,7 +16,7 @@ components:
       name: auth-token
 
   schemas:
-    Tool:
+    Item:
       type: object
       properties:
         id:
@@ -34,7 +34,7 @@ components:
         inStock:
           type: boolean
 
-    Contractor:
+    User:
       type: object
       properties:
         name:
@@ -47,22 +47,22 @@ components:
           type: string
 
 paths:
-  /contractors/register:
+  /users/register:
     post:
       tags:
-        - Contractor
-      summary: Register Contractor
-      description: Register a new Contractor in the database
+        - User
+      summary: Register User
+      description: Register a new User in the database
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Contractor"
+              $ref: "#/components/schemas/User"
 
       responses:
         201:
-          description: Contractor created succesfully
+          description: User created succesfully
           content:
             application/json:
               schema:
@@ -73,12 +73,12 @@ paths:
                   _id:
                     type: string
 
-  /contractors/login:
+  /users/login:
     post:
       tags:
-        - Contractor
-      summary: Login Contractor
-      description: Login a Contractor in order to get JWT token (auth-token)
+        - User
+      summary: Login User
+      description: Login a User in order to get JWT token (auth-token)
       requestBody:
         required: true
         content:
@@ -93,7 +93,7 @@ paths:
 
       responses:
         200:
-          description: Contractor logged in succesfully
+          description: User logged in succesfully
           content:
             application/json:
               schema:
@@ -104,30 +104,30 @@ paths:
                   data:
                     type: string
 
-  /contractors:
+  /users:
     get:
       tags:
-        - Contractor
-      summary: View All Contractors
-      description: Retrieves a list of Contractors as hitmen.
+        - User
+      summary: View All Users
+      description: Retrieves a list of Users.
       security:
         - ApiKeyAuth: []
       responses:
         200:
-          description: A list of Contractor hitmen in an array.
+          description: A list of User hitmen in an array.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Contractor"
+                  $ref: "#/components/schemas/User"
 
-  /tools:
+  /items:
     post:
       tags:
-        - Tools
-      summary: Add New Tool
-      description: Add a new Tool
+        - Items
+      summary: Add New Item
+      description: Add a new Item
       security:
         - ApiKeyAuth: []
       requestBody:
@@ -135,37 +135,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Tool"
+              $ref: "#/components/schemas/Item"
 
       responses:
         201:
-          description: Tool added succesfully
+          description: Item added succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tool"
+                $ref: "#/components/schemas/Item"
     
     get:
       tags:
-        - Tools
-      summary: View All Tools
-      description: Retrieves a list of Tools as murder objects.
+        - Items
+      summary: View All Items
+      description: Retrieves a list of Items as murder objects.
       responses:
         200:
-          description: A list of Tool murder objects in an array.
+          description: A list of Item murder objects in an array.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Tool"
+                  $ref: "#/components/schemas/Item"
 
-  /tools/{id}:
+  /items/{id}:
     get:
       tags:
-        - Tools
-      summary: View Specific Tool
-      description: Retrieves a specific Tool based on its id.
+        - Items
+      summary: View Specific Item
+      description: Retrieves a specific Item based on its id.
       parameters:
         - in: path
           name: id
@@ -175,19 +175,19 @@ paths:
             type: string
       responses:
         200:
-          description: A Tool in the format of a murder object.
+          description: A Item in the format of a murder object.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Tool"
+                  $ref: "#/components/schemas/Item"
 
     put:
       tags:
-        - Tools
-      summary: Edit Tool Information
-      description: Updates a specific Tool based on its id
+        - Items
+      summary: Edit Item Information
+      description: Updates a specific Item based on its id
       security:
         - ApiKeyAuth: []
       parameters:
@@ -202,21 +202,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Tool"
+              $ref: "#/components/schemas/Item"
 
       responses:
         201:
-          description: Tool updated succesfully
+          description: Item updated succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tool"
+                $ref: "#/components/schemas/Item"
 
     delete:
       tags:
-        - Tools
-      summary: Delete Tool
-      description: Deletes a specific Tool based on it id
+        - Items
+      summary: Delete Item
+      description: Deletes a specific Item based on it id
       security:
         - ApiKeyAuth: []
       parameters:
@@ -229,8 +229,8 @@ paths:
 
       responses:
         201:
-          description: Tool deleted succesfully
+          description: Item deleted succesfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tool"
+                $ref: "#/components/schemas/Item"
