@@ -2,12 +2,11 @@
 import express from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
-import { config } from './config/config';
+import config from './config/config';
 import Logging from './library/Logging';
 
 //ANCHOR: Route Imports
-// import authorRoutes from './routes/Author';
-// import bookRoutes from './routes/Book';
+import userRoutes from './routes/user';
 
 const router = express();
 
@@ -18,7 +17,6 @@ const yaml = require('yamljs');
 // setup swagger
 const swaggerDefinition = yaml.load('./swagger.yaml');
 router.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
-
 
 //SECTION: Setting up MongoDB connections
 mongoose
@@ -60,6 +58,8 @@ const StartServer = () => {
     });
 
     //SECTION: Routes
+    router.use('/user', userRoutes);
+
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ hello: 'pong' }));
 
