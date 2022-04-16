@@ -1,236 +1,236 @@
 openapi: 3.0.0
 info:
-  title: Kikaku
-  description: MongoDB ExpressJS NodeJS REST API
-  version: 1.0.0
+    title: Kikaku
+    description: MongoDB ExpressJS NodeJS REST API
+    version: 1.0.0
 servers:
-  - url: https://kikaku.herokuapp.com/api/
-    description: Heroku remote server
-  - url: http://localhost:4000/api/
-    description: Localhost development server
+    - url: https://kikaku.herokuapp.com/api/
+      description: Heroku remote server
+    - url: http://localhost:4000/api/
+      description: Localhost development server
 components:
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: auth-token
+    securitySchemes:
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: auth-token
 
-  schemas:
-    Item:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        img:
-          type: string
-        type:
-          type: string
-        price:
-          type: number
-        inStock:
-          type: boolean
+    schemas:
+        Item:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                img:
+                    type: string
+                type:
+                    type: string
+                price:
+                    type: number
+                inStock:
+                    type: boolean
 
-    User:
-      type: object
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-        pass:
-          type: string
-        date:
-          type: string
+        User:
+            type: object
+            properties:
+                nickname:
+                    type: string
+                email:
+                    type: string
+                password_hash:
+                    type: string
+                created_at:
+                    type: string
 
 paths:
-  /users/register:
-    post:
-      tags:
-        - User
-      summary: Register User
-      description: Register a new User in the database
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/User"
+    /users/register:
+        post:
+            tags:
+                - User
+            summary: Register User
+            description: Register a new User in the database
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
 
-      responses:
-        201:
-          description: User created succesfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                  _id:
-                    type: string
+            responses:
+                201:
+                    description: User created succesfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    _id:
+                                        type: string
 
-  /users/login:
-    post:
-      tags:
-        - User
-      summary: Login User
-      description: Login a User in order to get JWT token (auth-token)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                pass:
-                  type: string
+    /users/login:
+        post:
+            tags:
+                - User
+            summary: Login User
+            description: Login a User in order to get JWT token (auth-token)
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                pass:
+                                    type: string
 
-      responses:
-        200:
-          description: User logged in succesfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                  data:
-                    type: string
+            responses:
+                200:
+                    description: User logged in succesfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    error:
+                                        type: string
+                                    data:
+                                        type: string
 
-  /users:
-    get:
-      tags:
-        - User
-      summary: View All Users
-      description: Retrieves a list of Users.
-      security:
-        - ApiKeyAuth: []
-      responses:
-        200:
-          description: A list of User hitmen in an array.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/User"
+    /users:
+        get:
+            tags:
+                - User
+            summary: View All Users
+            description: Retrieves a list of Users.
+            security:
+                - ApiKeyAuth: []
+            responses:
+                200:
+                    description: A list of User hitmen in an array.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/User'
 
-  /items:
-    post:
-      tags:
-        - Items
-      summary: Add New Item
-      description: Add a new Item
-      security:
-        - ApiKeyAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Item"
+    /items:
+        post:
+            tags:
+                - Items
+            summary: Add New Item
+            description: Add a new Item
+            security:
+                - ApiKeyAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Item'
 
-      responses:
-        201:
-          description: Item added succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Item"
-    
-    get:
-      tags:
-        - Items
-      summary: View All Items
-      description: Retrieves a list of Items as murder objects.
-      responses:
-        200:
-          description: A list of Item murder objects in an array.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Item"
+            responses:
+                201:
+                    description: Item added succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Item'
 
-  /items/{id}:
-    get:
-      tags:
-        - Items
-      summary: View Specific Item
-      description: Retrieves a specific Item based on its id.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      responses:
-        200:
-          description: A Item in the format of a murder object.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Item"
+        get:
+            tags:
+                - Items
+            summary: View All Items
+            description: Retrieves a list of Items as murder objects.
+            responses:
+                200:
+                    description: A list of Item murder objects in an array.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Item'
 
-    put:
-      tags:
-        - Items
-      summary: Edit Item Information
-      description: Updates a specific Item based on its id
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Item"
+    /items/{id}:
+        get:
+            tags:
+                - Items
+            summary: View Specific Item
+            description: Retrieves a specific Item based on its id.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB id
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: A Item in the format of a murder object.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Item'
 
-      responses:
-        201:
-          description: Item updated succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Item"
+        put:
+            tags:
+                - Items
+            summary: Edit Item Information
+            description: Updates a specific Item based on its id
+            security:
+                - ApiKeyAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB id
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Item'
 
-    delete:
-      tags:
-        - Items
-      summary: Delete Item
-      description: Deletes a specific Item based on it id
-      security:
-        - ApiKeyAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: MongoDB id
-          schema:
-            type: string
+            responses:
+                201:
+                    description: Item updated succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Item'
 
-      responses:
-        201:
-          description: Item deleted succesfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Item"
+        delete:
+            tags:
+                - Items
+            summary: Delete Item
+            description: Deletes a specific Item based on it id
+            security:
+                - ApiKeyAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB id
+                  schema:
+                      type: string
+
+            responses:
+                201:
+                    description: Item deleted succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Item'
