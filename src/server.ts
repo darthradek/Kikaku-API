@@ -16,7 +16,7 @@ const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
 // setup swagger
 const swaggerDefinition = yaml.load('./swagger.yaml');
-router.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
+router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
 //SECTION: Setting up MongoDB connections
 mongoose

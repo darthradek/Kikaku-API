@@ -4,9 +4,9 @@ import extractToken from '../middleware/extractToken';
 
 const router = express.Router();
 
-router.get('/authenticate', extractToken, controller.validateToken);
-router.post('/login', controller.login);
-router.post('/register', controller.register);
+router.get('/authenticate', extractToken, controller.validateUserToken);
+router.post('/login', controller.loginUser);
+router.post('/register', controller.registerUser);
 router.get('/getAll', controller.getAllUsers);
 
 export = router;

@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import mongoose from 'mongoose';
 import User from '../models/user';
 import Logging from '../library/Logging';
 import bcryptjs from 'bcryptjs';
 import signToken from '../helpers/signToken';
 
-const validateToken = (req: Request, res: Response, next: NextFunction) => {
+const validateUserToken = (req: Request, res: Response, next: NextFunction) => {
     Logging.info('Token validated successfully, user authenticated!');
 
     return res.status(200).json({
@@ -13,7 +12,7 @@ const validateToken = (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-const login = (req: Request, res: Response, next: NextFunction) => {
+const loginUser = (req: Request, res: Response, next: NextFunction) => {
     let { username, password } = req.body;
 
     User.find({ username })
@@ -21,7 +20,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
         .then((users) => {
             if (users.length !== 1) {
                 return res.status(401).json({
-                    message: 'Unauthorized'
+                    message: 'Token cannot be validated, Unauthorized'
                 });
             }
 
@@ -39,7 +38,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
                             });
                         } else if (token) {
                             return res.status(200).json({
-                                message: 'Auth successful',
+                                message: 'Authenticated successfully',
                                 token: token,
                                 user: users[0]
                             });
@@ -56,7 +55,7 @@ const login = (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-const register = (req: Request, res: Response, next: NextFunction) => {
+const registerUser = (req: Request, res: Response, next: NextFunction) => {
     let { username, email, password } = req.body;
 
     bcryptjs.hash(password, 10, (hashError, hash) => {
@@ -91,7 +90,6 @@ const register = (req: Request, res: Response, next: NextFunction) => {
 
 const getAllUsers = (req: Request, res: Response, next: NextFunction) => {
     User.find()
-        .select('-password')
         .exec()
         .then((users) => {
             return res.status(200).json({
@@ -107,4 +105,4 @@ const getAllUsers = (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { validateToken, register, login, getAllUsers };
+export default { validateUserToken, registerUser, loginUser, getAllUsers };
