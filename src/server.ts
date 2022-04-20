@@ -7,6 +7,7 @@ import Logging from './library/Logging';
 
 //ANCHOR: Route Imports
 import userRoutes from './routes/user';
+import teamRoutes from './routes/team';
 
 const router = express();
 
@@ -59,6 +60,7 @@ const StartServer = () => {
 
     //SECTION: Routes
     router.use('/user', userRoutes);
+    router.use('/team', teamRoutes);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ hello: 'pong' }));
