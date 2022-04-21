@@ -6,6 +6,6 @@ export default interface ITeam extends Document {
     description: string;
     members: IUser[];
     leader: string;
-    created_by: string;
+    created_by: IUser;
     created_at: string;
 }
