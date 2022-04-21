@@ -140,4 +140,4 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-export default { validateUserToken, registerUser, loginUser, getAllUsers, getUserById, deleteUser };
+export default { validateUserToken, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };
