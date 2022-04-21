@@ -105,4 +105,39 @@ const getAllUsers = (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { validateUserToken, registerUser, loginUser, getAllUsers };
+const getUserById = (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.userId;
+
+    return User.findById(userId)
+        .then((user) => (user ? res.status(200).json({ user }) : res.status(404).json({ message: 'User not found' })))
+        .catch((error) => res.status(500).json({ error }));
+};
+
+const updateUser = (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.userId;
+
+    return User.findById(userId)
+        .then((user) => {
+            if (user) {
+                user.set(req.body);
+
+                return user
+                    .save()
+                    .then((user) => res.status(201).json({ user }))
+                    .catch((error) => res.status(500).json({ error }));
+            } else {
+                return res.status(404).json({ message: 'User not found' });
+            }
+        })
+        .catch((error) => res.status(500).json({ error }));
+};
+
+const deleteUser = (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.params.userId;
+
+    return User.findByIdAndDelete(userId)
+        .then((user) => (user ? res.status(201).json({ user, message: 'User deleted successfully' }) : res.status(404).json({ message: 'User not found' })))
+        .catch((error) => res.status(500).json({ error }));
+};
+
+export default { validateUserToken, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };
