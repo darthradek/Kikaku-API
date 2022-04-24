@@ -10,7 +10,7 @@ import userRoutes from './routes/user';
 import teamRoutes from './routes/team';
 import projectRoutes from './routes/project';
 
-const router = express();
+const app = express();
 
 //SECTION: Setting up swagger
 // swagger deps
@@ -18,7 +18,7 @@ const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
 // setup swagger
 const swaggerDefinition = yaml.load('./swagger.yaml');
-router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
 //SECTION: Setting up MongoDB connections
 mongoose
@@ -31,7 +31,7 @@ mongoose
 
 //NOTE: Only start server if MongoDB connects
 const StartServer = () => {
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         //NOTE: Log the req
         Logging.info(`Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
@@ -43,11 +43,11 @@ const StartServer = () => {
         next();
     });
 
-    router.use(express.urlencoded({ extended: true }));
-    router.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
     //SECTION: Setting up API rules, CORS
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
@@ -60,15 +60,15 @@ const StartServer = () => {
     });
 
     //SECTION: Routes
-    router.use('/user', userRoutes);
-    router.use('/team', teamRoutes);
-    router.use('/project', projectRoutes);
+    app.use('/user', userRoutes);
+    app.use('/team', teamRoutes);
+    app.use('/project', projectRoutes);
 
     /** Healthcheck */
-    router.get('/ping', (req, res, next) => res.status(200).json({ hello: 'pong' }));
+    app.get('/welcome', (req, res, next) => res.status(200).send({ message: 'Welcome to Kikaku API' }));
 
     //SECTION: Error Handling
-    router.use((req, res, next) => {
+    app.use((req, res, next) => {
         const error = new Error('Route not found');
 
         Logging.error(error);
@@ -78,5 +78,7 @@ const StartServer = () => {
         });
     });
 
-    http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+    http.createServer(app).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
 };
+
+module.exports = app;
