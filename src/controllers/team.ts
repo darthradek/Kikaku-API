@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Team from '../models/team';
+const NodeCache = require('node-cache');
+const cache = new NodeCache({ stdTLL: 600 });
 
 const createTeam = (req: Request, res: Response, next: NextFunction) => {
     const { name, description, members, leader, created_by } = req.body;
@@ -19,20 +21,32 @@ const createTeam = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getAllTeams = (req: Request, res: Response, next: NextFunction) => {
-    Team.find()
-        .exec()
-        .then((teams) => {
-            return res.status(200).json({
-                teams: teams,
-                count: teams.length
-            });
-        })
-        .catch((error) => {
-            return res.status(500).json({
-                message: error.message,
-                error
-            });
+    try {
+        let teamsCache = cache.get('allTeams');
+
+        if (teamsCache == null) {
+            let data = await Team.find();
+        }
+    }
+    catch (error) {
+        res.status(500).send({
+            message: error
         });
+    }
+    // Team.find()
+    //     .exec()
+    //     .then((teams) => {
+    //         return res.status(200).json({
+    //             teams: teams,
+    //             count: teams.length
+    //         });
+    //     })
+    //     .catch((error) => {
+    //         return res.status(500).json({
+    //             message: error.message,
+    //             error
+    //         });
+    //     });
 };
 
 const getTeamById = (req: Request, res: Response, next: NextFunction) => {

@@ -19,6 +19,7 @@
     },
     "homepage": "https://github.com/darthradek/Kikaku-API#readme",
     "dependencies": {
+        "@types/node-cache": "^4.2.5",
         "bcryptjs": "^2.4.3",
         "chalk": "^4.1.2",
         "dotenv": "^16.0.0",
@@ -26,6 +27,7 @@
         "joi": "^17.6.0",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.2.11",
+        "node-cache": "^5.1.2",
         "swagger-ui-express": "^4.3.0",
         "yamljs": "^0.3.0"
     },
