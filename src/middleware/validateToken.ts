@@ -3,7 +3,7 @@ import config from '../config/config';
 import Logging from '../library/Logging';
 import { Request, Response, NextFunction } from 'express';
 
-const extractToken = (req: Request, res: Response, next: NextFunction) => {
+const validateToken = (req: Request, res: Response, next: NextFunction) => {
     Logging.info('Validating token');
 
     let token = req.headers.authorization?.split(' ')[1];
@@ -27,4 +27,4 @@ const extractToken = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export default extractToken;
+export default validateToken;
