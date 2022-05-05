@@ -1,5 +1,6 @@
 import { Document } from 'mongoose';
 import ITeam from './team';
+import IUser from './user';
 
 export default interface IProject extends Document {
     name: string;
@@ -8,6 +9,6 @@ export default interface IProject extends Document {
     status: number;
     deadline: string;
     team: ITeam;
-    created_by: string;
+    created_by: IUser;
     created_at: string;
 }
