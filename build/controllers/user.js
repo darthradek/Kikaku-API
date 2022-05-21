@@ -1,21 +1,62 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
 const Logging_1 = __importDefault(require("../library/Logging"));
+const jwt = __importStar(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const signToken_1 = __importDefault(require("../helpers/signToken"));
-const validateUserToken = (req, res, next) => {
-    Logging_1.default.info('Token validated successfully, user authenticated!');
-    return res.status(200).json({
-        message: 'User authenticated successfully'
-    });
+const config_1 = __importDefault(require("../config/config"));
+const getLoggedInUser = (req, res, next) => {
+    var _a;
+    const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+    Logging_1.default.info(token);
+    if (token) {
+        jwt.verify(token, config_1.default.token.secret, (err, user) => {
+            if (err) {
+                Logging_1.default.error(err);
+                return res.status(403).send({ success: false, message: 'Token Expired' });
+            }
+            else {
+                const username = user.username;
+                return user_1.default.find({ username })
+                    .then((user) => (user ? res.status(200).json({ user }) : res.status(404).json({ message: 'User not found' })))
+                    .catch((error) => res.status(500).json({ error }));
+            }
+        });
+    }
+    else {
+        res.status(403).json({ success: false, message: 'Token is not valid' });
+    }
 };
 const loginUser = (req, res, next) => {
-    let { username, password } = req.body;
-    user_1.default.find({ username })
+    let { email, password } = req.body;
+    user_1.default.find({ email })
         .exec()
         .then((users) => {
         if (users.length !== 1) {
@@ -129,4 +170,4 @@ const deleteUser = (req, res, next) => {
         .then((user) => (user ? res.status(201).json({ user, message: 'User deleted successfully' }) : res.status(404).json({ message: 'User not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
-exports.default = { validateUserToken, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };
+exports.default = { getLoggedInUser, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };

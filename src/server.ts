@@ -59,12 +59,12 @@ server.use((req, res, next) => {
 });
 
 //SECTION: Routes
-server.use('/user', userRoutes);
-server.use('/team', teamRoutes);
-server.use('/project', projectRoutes);
+server.use('/api/users', userRoutes);
+server.use('/api/teams', teamRoutes);
+server.use('/api/projects', projectRoutes);
 
 /** Healthcheck */
-server.get('/welcome', (req, res, next) => res.status(200).send({ message: 'Welcome to Kikaku API' }));
+server.get('/api/welcome', (req, res, next) => res.status(200).send({ message: 'Welcome to Kikaku API' }));
 
 //SECTION: Error Handling
 server.use((req, res, next) => {

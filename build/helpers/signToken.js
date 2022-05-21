@@ -9,7 +9,7 @@ const Logging_1 = __importDefault(require("../library/Logging"));
 const signToken = (user, callback) => {
     var timeSinceEpoch = new Date().getTime();
     var expirationTime = timeSinceEpoch + Number(config_1.default.token.expireTime) * 100000;
-    var expirationTimeInSeconds = Math.floor(expirationTime / 1000);
+    var expirationTimeInSeconds = Math.floor(expirationTime / 1000000);
     Logging_1.default.info(`Attempting to sign token for ${user.id}`);
     try {
         jsonwebtoken_1.default.sign({

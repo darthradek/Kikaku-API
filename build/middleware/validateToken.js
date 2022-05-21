@@ -8,7 +8,7 @@ const config_1 = __importDefault(require("../config/config"));
 const Logging_1 = __importDefault(require("../library/Logging"));
 const validateToken = (req, res, next) => {
     var _a;
-    Logging_1.default.info('Validating token');
+    Logging_1.default.info('Validating token, middleware');
     let token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
     if (token) {
         jsonwebtoken_1.default.verify(token, config_1.default.token.secret, (error, decoded) => {
@@ -26,7 +26,7 @@ const validateToken = (req, res, next) => {
     }
     else {
         return res.status(401).json({
-            message: 'Unauthorized'
+            message: 'Token is not valid, unauthorized'
         });
     }
 };

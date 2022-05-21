@@ -1,21 +1,36 @@
 import { NextFunction, Request, Response } from 'express';
 import User from '../models/user';
 import Logging from '../library/Logging';
+import * as jwt from 'jsonwebtoken';
+
 import bcryptjs from 'bcryptjs';
 import signToken from '../helpers/signToken';
+import config from '../config/config';
 
-const validateUserToken = (req: Request, res: Response, next: NextFunction) => {
-    Logging.info('Token validated successfully, user authenticated!');
-
-    return res.status(200).json({
-        message: 'User authenticated successfully'
-    });
+const getLoggedInUser = (req: Request, res: Response, next: NextFunction) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    Logging.info(token);
+    if (token) {
+        jwt.verify(token, config.token.secret, (err: any, user: any) => {
+            if (err) {
+                Logging.error(err);
+                return res.status(403).send({ success: false, message: 'Token Expired' });
+            } else {
+                const username = user.username;
+                return User.find({ username })
+                    .then((user) => (user ? res.status(200).json({ user }) : res.status(404).json({ message: 'User not found' })))
+                    .catch((error) => res.status(500).json({ error }));
+            }
+        });
+    } else {
+        res.status(403).json({ success: false, message: 'Token is not valid' });
+    }
 };
 
 const loginUser = (req: Request, res: Response, next: NextFunction) => {
-    let { username, password } = req.body;
+    let { email, password } = req.body;
 
-    User.find({ username })
+    User.find({ email })
         .exec()
         .then((users) => {
             if (users.length !== 1) {
@@ -140,4 +155,4 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-export default { validateUserToken, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };
+export default { getLoggedInUser, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };

@@ -50,11 +50,11 @@ server.use((req, res, next) => {
     next();
 });
 //SECTION: Routes
-server.use('/user', user_1.default);
-server.use('/team', team_1.default);
-server.use('/project', project_1.default);
+server.use('/api/users', user_1.default);
+server.use('/api/teams', team_1.default);
+server.use('/api/projects', project_1.default);
 /** Healthcheck */
-server.get('/welcome', (req, res, next) => res.status(200).send({ message: 'Welcome to Kikaku API' }));
+server.get('/api/welcome', (req, res, next) => res.status(200).send({ message: 'Welcome to Kikaku API' }));
 //SECTION: Error Handling
 server.use((req, res, next) => {
     const error = new Error('Route not found');
