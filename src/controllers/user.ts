@@ -7,7 +7,7 @@ import bcryptjs from 'bcryptjs';
 import signToken from '../helpers/signToken';
 import config from '../config/config';
 
-const getLoggedInUser = (req: Request, res: Response, next: NextFunction) => {
+const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(' ')[1];
     Logging.info(token);
     if (token) {
@@ -155,4 +155,4 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-export default { getLoggedInUser, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };
+export default { authenticateUser, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };
