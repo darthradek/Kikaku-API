@@ -6,7 +6,7 @@ import IUser from '../interfaces/user';
 const signToken = (user: IUser, callback: (error: Error | null, token: string | null) => void): void => {
     var timeSinceEpoch = new Date().getTime();
     var expirationTime = timeSinceEpoch + Number(config.token.expireTime) * 100000;
-    var expirationTimeInSeconds = Math.floor(expirationTime / 1000);
+    var expirationTimeInSeconds = Math.floor(expirationTime / 1000000);
 
     Logging.info(`Attempting to sign token for ${user.id}`);
 

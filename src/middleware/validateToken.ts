@@ -4,7 +4,7 @@ import Logging from '../library/Logging';
 import { Request, Response, NextFunction } from 'express';
 
 const validateToken = (req: Request, res: Response, next: NextFunction) => {
-    Logging.info('Validating token');
+    Logging.info('Validating token, middleware');
 
     let token = req.headers.authorization?.split(' ')[1];
 
@@ -22,7 +22,7 @@ const validateToken = (req: Request, res: Response, next: NextFunction) => {
         });
     } else {
         return res.status(401).json({
-            message: 'Unauthorized'
+            message: 'Token is not valid, unauthorized'
         });
     }
 };

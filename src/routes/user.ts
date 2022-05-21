@@ -4,10 +4,10 @@ import validateToken from '../middleware/validateToken';
 
 const router = express.Router();
 
-router.get('/authenticate', validateToken, controller.validateUserToken);
+router.get('/authenticate', validateToken, controller.authenticateUser);
 router.post('/login', controller.loginUser);
 router.post('/register', controller.registerUser);
-router.get('/getAll', validateToken, controller.getAllUsers);
+router.get('', validateToken, controller.getAllUsers);
 router.get('/:userId', validateToken, controller.getUserById);
 router.patch('/update/:userId', validateToken, controller.updateUser);
 router.delete('/delete/:userId', validateToken, controller.deleteUser);
