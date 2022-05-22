@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const MONGO_URL = process.env.MONGO_URL || '';
-const SERVER_PORT = process.env.SERVER_PORT || 4000;
+const SERVER_PORT = process.env.PORT || 4000;
 
 const SERVER_TOKEN_EXPIRETIME = process.env.SERVER_TOKEN_EXPIRETIME || 3600;
 const SERVER_TOKEN_ISSUER = process.env.SERVER_TOKEN_ISSUER || 'coolIssuer';
