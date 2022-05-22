@@ -6,7 +6,7 @@ const express_1 = __importDefault(require("express"));
 const user_1 = __importDefault(require("../controllers/user"));
 const validateToken_1 = __importDefault(require("../middleware/validateToken"));
 const router = express_1.default.Router();
-router.get('/authenticate', user_1.default.getLoggedInUser);
+router.get('/authenticate', validateToken_1.default, user_1.default.authenticateUser);
 router.post('/login', user_1.default.loginUser);
 router.post('/register', user_1.default.registerUser);
 router.get('', validateToken_1.default, user_1.default.getAllUsers);

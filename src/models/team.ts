@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import ITeam from '../interfaces/team';
 
-const TeamSchema: Schema = new Schema({
+const TeamSchema = new Schema({
     name: { type: String, required: true, unique: true },
     description: { type: String, required: true },
     members: [{ type: Schema.Types.ObjectId, required: true, ref: 'User' }],

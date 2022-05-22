@@ -39,8 +39,9 @@ const getTeamById = (req: Request, res: Response, next: NextFunction) => {
     const teamId = req.params.teamId;
 
     return Team.findById(teamId)
-        .populate('members', 'nickname')
-        .select('users')
+        .populate('members')
+        .populate('leader')
+        .populate('created_by')
         .then((team) => (team ? res.status(200).json({ team }) : res.status(404).json({ message: 'Team not found' })))
         .catch((error) => res.status(500).json({ error }));
 };

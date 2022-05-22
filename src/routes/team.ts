@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post('/create', validateToken, controller.createTeam);
 router.get('', validateToken, controller.getAllTeams);
-router.get('/:userId', validateToken, controller.getTeamById);
-router.patch('/update/:userId', validateToken, controller.updateTeam);
+router.get('/:teamId', validateToken, controller.getTeamById);
+router.patch('/update/:teamId', validateToken, controller.updateTeam);
 router.delete('/delete/:teamId', validateToken, controller.deleteTeam);
 
 export = router;

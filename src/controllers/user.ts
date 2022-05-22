@@ -18,7 +18,7 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
             } else {
                 const username = user.username;
                 return User.find({ username })
-                    .then((user) => (user ? res.status(200).json({ user }) : res.status(404).json({ message: 'User not found' })))
+                    .then((user) => (user ? res.status(200).json({ token: token, user: user }) : res.status(404).json({ message: 'User not found' })))
                     .catch((error) => res.status(500).json({ error }));
             }
         });

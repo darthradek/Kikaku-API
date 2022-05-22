@@ -32,7 +32,7 @@ const jwt = __importStar(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const signToken_1 = __importDefault(require("../helpers/signToken"));
 const config_1 = __importDefault(require("../config/config"));
-const getLoggedInUser = (req, res, next) => {
+const authenticateUser = (req, res, next) => {
     var _a;
     const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
     Logging_1.default.info(token);
@@ -45,7 +45,7 @@ const getLoggedInUser = (req, res, next) => {
             else {
                 const username = user.username;
                 return user_1.default.find({ username })
-                    .then((user) => (user ? res.status(200).json({ user }) : res.status(404).json({ message: 'User not found' })))
+                    .then((user) => (user ? res.status(200).json({ token: token, user: user }) : res.status(404).json({ message: 'User not found' })))
                     .catch((error) => res.status(500).json({ error }));
             }
         });
@@ -170,4 +170,4 @@ const deleteUser = (req, res, next) => {
         .then((user) => (user ? res.status(201).json({ user, message: 'User deleted successfully' }) : res.status(404).json({ message: 'User not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
-exports.default = { getLoggedInUser, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };
+exports.default = { authenticateUser, registerUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser };
