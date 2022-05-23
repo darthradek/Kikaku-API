@@ -30,8 +30,8 @@ const ProjectSchema = new mongoose_1.Schema({
     description: { type: String, required: true },
     status: { type: Number, required: true },
     deadline: { type: String, required: true },
-    team: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'Team' },
+    team: { type: mongoose_1.Schema.Types.ObjectId, required: false, ref: 'Team' },
     created_by: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'User' },
-    created_at: { type: Date, default: Date.now },
+    created_at: { type: Date, default: Date.now }
 });
 exports.default = mongoose_1.default.model('Project', ProjectSchema);

@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
-import ITeam from './team';
-import IUser from './user';
+import ITeam from './ITeam';
+import IUser from './IUser';
 
 export default interface IProject extends Document {
     name: string;

@@ -25,7 +25,7 @@ const getAllProjects = (req: Request, res: Response, next: NextFunction) => {
         .exec()
         .then((projects) => {
             return res.status(200).json({
-                teams: projects,
+                projects: projects,
                 count: projects.length
             });
         })
@@ -41,7 +41,16 @@ const getProjectById = (req: Request, res: Response, next: NextFunction) => {
     const projectId = req.params.projectId;
 
     return Project.findById(projectId)
-        .then((project) => (project ? res.status(200).json({ project }) : res.status(404).json({ message: 'Project not found' })))
+        .then((project) => (project ? res.status(200).json(project) : res.status(404).json({ message: 'Project not found' })))
+        .catch((error) => res.status(500).json({ error }));
+};
+
+const getAllProjectsCreatedByUser = (req: Request, res: Response, next: NextFunction) => {
+    const created_by = req.params.created_by;
+
+    return Project.find({ created_by })
+        .populate('created_by')
+        .then((projects) => (projects ? res.status(200).json(projects) : res.status(404).json({ message: 'Projects not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -72,4 +81,4 @@ const deleteProject = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-export default { createProject, getProjectById, getAllProjects, deleteProject, updateProject };
+export default { createProject, getProjectById, getAllProjects, getAllProjectsCreatedByUser, deleteProject, updateProject };

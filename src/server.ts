@@ -9,6 +9,8 @@ import Logging from './library/Logging';
 import userRoutes from './routes/user';
 import teamRoutes from './routes/team';
 import projectRoutes from './routes/project';
+import projectStageRoutes from './routes/projectStage';
+import taskRoutes from './routes/task';
 
 const server = express();
 
@@ -62,6 +64,8 @@ server.use((req, res, next) => {
 server.use('/api/users', userRoutes);
 server.use('/api/teams', teamRoutes);
 server.use('/api/projects', projectRoutes);
+server.use('/api/projectStages', projectStageRoutes);
+server.use('/api/tasks', taskRoutes);
 
 /** Healthcheck */
 server.get('/api/welcome', (req, res, next) => res.status(200).send({ message: 'Welcome to Kikaku API' }));

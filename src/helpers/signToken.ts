@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
 import Logging from '../library/Logging';
-import IUser from '../interfaces/user';
+import IUser from '../interfaces/IUser';
 
 const signToken = (user: IUser, callback: (error: Error | null, token: string | null) => void): void => {
     var timeSinceEpoch = new Date().getTime();
