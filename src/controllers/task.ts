@@ -21,6 +21,7 @@ const getAllTasks = (req: Request, res: Response, next: NextFunction) => {
     const task_id = req.params.taskId;
 
     return Task.find({ task_id })
+        .populate('created_by')
         .then((tasks) => (tasks ? res.status(200).json(tasks) : res.status(404).json({ message: 'Tasks not found' })))
         .catch((error) => res.status(500).json({ error }));
 };

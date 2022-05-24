@@ -8,10 +8,9 @@ const createProjectStage = (req: Request, res: Response, next: NextFunction) => 
         tasks,
         project_id
     });
-
     return projectStage
         .save()
-        .then((projectStage) => res.status(201).json({ projectStage }))
+        .then((projectStage) => res.status(201).json(projectStage))
         .catch((error) => res.status(500).json({ error }));
 };
 

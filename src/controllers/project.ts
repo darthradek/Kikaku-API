@@ -16,7 +16,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
 
     return project
         .save()
-        .then((project) => res.status(201).json({ project }))
+        .then((project) => res.status(201).json(project))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -77,7 +77,7 @@ const deleteProject = (req: Request, res: Response, next: NextFunction) => {
     const projectId = req.params.projectId;
 
     return Project.findByIdAndDelete(projectId)
-        .then((project) => (project ? res.status(201).json({ project, message: 'Project deleted successfully' }) : res.status(404).json({ message: 'Project not found' })))
+        .then((project) => (project ? res.status(201).json(project) : res.status(404).json({ message: 'Project not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
