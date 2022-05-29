@@ -15,19 +15,18 @@ const createProjectStage = (req: Request, res: Response, next: NextFunction) => 
 };
 
 const updateProjectStage = (req: Request, res: Response, next: NextFunction) => {
-    const projectStage_id = req.params.projectStageId;
+    const projectStageId = req.params.projectStageId;
 
-    return ProjectStage.findById(projectStage_id)
+    return ProjectStage.findById(projectStageId)
         .then((projectStage) => {
             if (projectStage) {
                 projectStage.set(req.body);
-
                 return projectStage
                     .save()
                     .then((projectStage) => res.status(201).json(projectStage))
                     .catch((error) => res.status(500).json({ error }));
             } else {
-                return res.status(404).json({ message: 'Project not found' });
+                return res.status(404).json({ message: 'Project Stage couldnt be updated' });
             }
         })
         .catch((error) => res.status(500).json({ error }));
@@ -43,10 +42,10 @@ const getAllProjectStagesForProject = (req: Request, res: Response, next: NextFu
 };
 
 const deleteProjectStage = (req: Request, res: Response, next: NextFunction) => {
-    const project_id = req.params.projectId;
+    const projectStageId = req.params.projectStageId;
 
-    return ProjectStage.findByIdAndDelete(project_id)
-        .then((projectStage) => (projectStage ? res.status(201).json({ projectStage, message: 'Project deleted successfully' }) : res.status(404).json({ message: 'Project not found' })))
+    return ProjectStage.findByIdAndDelete(projectStageId)
+        .then((projectStage) => (projectStage ? res.status(201).json({ projectStage, message: 'Project Stage deleted successfully' }) : res.status(404).json({ message: 'Project Stage not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
