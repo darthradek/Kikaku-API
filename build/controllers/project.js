@@ -17,7 +17,7 @@ const createProject = (req, res, next) => {
     });
     return project
         .save()
-        .then((project) => res.status(201).json({ project }))
+        .then((project) => res.status(201).json(project))
         .catch((error) => res.status(500).json({ error }));
 };
 const getAllProjects = (req, res, next) => {
@@ -25,7 +25,7 @@ const getAllProjects = (req, res, next) => {
         .exec()
         .then((projects) => {
         return res.status(200).json({
-            teams: projects,
+            projects: projects,
             count: projects.length
         });
     })
@@ -39,7 +39,14 @@ const getAllProjects = (req, res, next) => {
 const getProjectById = (req, res, next) => {
     const projectId = req.params.projectId;
     return project_1.default.findById(projectId)
-        .then((project) => (project ? res.status(200).json({ project }) : res.status(404).json({ message: 'Project not found' })))
+        .then((project) => (project ? res.status(200).json(project) : res.status(404).json({ message: 'Project not found' })))
+        .catch((error) => res.status(500).json({ error }));
+};
+const getAllProjectsCreatedByUser = (req, res, next) => {
+    const created_by = req.params.created_by;
+    return project_1.default.find({ created_by })
+        .populate('created_by')
+        .then((projects) => (projects ? res.status(200).json(projects) : res.status(404).json({ message: 'Projects not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 const updateProject = (req, res, next) => {
@@ -62,7 +69,7 @@ const updateProject = (req, res, next) => {
 const deleteProject = (req, res, next) => {
     const projectId = req.params.projectId;
     return project_1.default.findByIdAndDelete(projectId)
-        .then((project) => (project ? res.status(201).json({ project, message: 'Project deleted successfully' }) : res.status(404).json({ message: 'Project not found' })))
+        .then((project) => (project ? res.status(201).json(project) : res.status(404).json({ message: 'Project not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
-exports.default = { createProject, getProjectById, getAllProjects, deleteProject, updateProject };
+exports.default = { createProject, getProjectById, getAllProjects, getAllProjectsCreatedByUser, deleteProject, updateProject };

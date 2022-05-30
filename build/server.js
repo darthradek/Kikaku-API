@@ -12,6 +12,8 @@ const Logging_1 = __importDefault(require("./library/Logging"));
 const user_1 = __importDefault(require("./routes/user"));
 const team_1 = __importDefault(require("./routes/team"));
 const project_1 = __importDefault(require("./routes/project"));
+const projectStage_1 = __importDefault(require("./routes/projectStage"));
+const task_1 = __importDefault(require("./routes/task"));
 const server = (0, express_1.default)();
 //SECTION: Setting up swagger
 // swagger deps
@@ -53,6 +55,8 @@ server.use((req, res, next) => {
 server.use('/api/users', user_1.default);
 server.use('/api/teams', team_1.default);
 server.use('/api/projects', project_1.default);
+server.use('/api/projectStages', projectStage_1.default);
+server.use('/api/tasks', task_1.default);
 /** Healthcheck */
 server.get('/api/welcome', (req, res, next) => res.status(200).send({ message: 'Welcome to Kikaku API' }));
 //SECTION: Error Handling
