@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 
 describe('User workflow tests', () => {
 
-    it('Should register user', (done) => {
+    it('Should register user, then log him into newly created account', (done) => {
         //SECTION_1 Register new user
         let user =
         {
@@ -23,35 +23,20 @@ describe('User workflow tests', () => {
             .end((err, res) => {
                 expect(res.status).to.be.equal(201);
                 expect(res.body).to.be.a('object');
-                done();
-            });
 
-
-    });
-
-    it('Should log in the user & authenticate him with JWT', (done) => {
-        let userLogin =
-        {
-            email: "test-user@gmail.com",
-            password: "123456"
-        }
-        chai.request(server)
-            .post('/api/users/login')
-            .send(userLogin)
-            .end((err, res) => {
-                res.should.have.status(200);
-                expect(res.body).to.be.a('object');
-                done();
-
-                let token = res.token
+                let userLogin =
+                {
+                    email: "test-user@gmail.com",
+                    password: "123456"
+                }
                 chai.request(server)
-                    .get('/api/users/authenticate')
-                    .send(token)
+                    .post('/api/users/login')
+                    .send(userLogin)
                     .end((err, res) => {
                         res.should.have.status(200);
                         expect(res.body).to.be.a('object');
                         done();
-                    })
+                    });
             });
     });
 });
