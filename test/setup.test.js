@@ -1,19 +1,8 @@
-// process.env.NODE_ENV = 'test';
+var mongoose = require('mongoose');
 
-// const Team = require('../models/team');
-// const User = require('../models/user');
-
-
-// //clean up the database before and after each test
-// beforeEach((done) => {
-//     Team.deleteMany({}, function (err) { });
-//     User.deleteMany({}, function (err) { });
-//     done();
-// });
-
-// afterEach((done) => {
-//     User.deleteMany({}, function (err) { });
-//     Team.deleteMany({}, function (err) { });
-//     done();
-// });
-
+after((done) => {
+    for (var collection in mongoose.connection.collections) {
+        mongoose.connection.collections[collection].deleteMany(function () { });
+    }
+    return done();
+});

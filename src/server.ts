@@ -1,10 +1,8 @@
 //SECTION: Imports
 import express from 'express';
-import http from 'http';
 import mongoose from 'mongoose';
 import config from './config/config';
 import Logging from './library/Logging';
-
 //ANCHOR: Route Imports
 import userRoutes from './routes/user';
 import teamRoutes from './routes/team';
@@ -13,12 +11,9 @@ import projectStageRoutes from './routes/projectStage';
 import taskRoutes from './routes/task';
 
 const server = express();
-
 //SECTION: Setting up swagger
-// swagger deps
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
-// setup swagger
 const swaggerDefinition = yaml.load('./swagger.yaml');
 server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 

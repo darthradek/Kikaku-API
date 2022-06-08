@@ -16,10 +16,8 @@ const projectStage_1 = __importDefault(require("./routes/projectStage"));
 const task_1 = __importDefault(require("./routes/task"));
 const server = (0, express_1.default)();
 //SECTION: Setting up swagger
-// swagger deps
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('yamljs');
-// setup swagger
 const swaggerDefinition = yaml.load('./swagger.yaml');
 server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 //SECTION: Setting up MongoDB connections
