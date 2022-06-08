@@ -27,7 +27,7 @@ jobs:
             - name: NPM install, build and test
               run: |
                   npm install
-                  npm run test
+                  npm test
               env:
                   MONGO_URL: ${{ secrets.MONGO_URL }}
 
