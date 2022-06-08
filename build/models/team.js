@@ -28,7 +28,7 @@ const TeamSchema = new mongoose_1.Schema({
     name: { type: String, required: true, unique: true },
     description: { type: String, required: true },
     members: [{ type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'User' }],
-    leader: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'User' },
+    leader: { type: mongoose_1.Schema.Types.ObjectId, required: false, ref: 'User' },
     created_at: { type: Date, default: Date.now },
     created_by: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'User' }
 });

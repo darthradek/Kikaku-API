@@ -28,7 +28,7 @@ const ProjectSchema = new mongoose_1.Schema({
     name: { type: String, required: true, unique: true },
     objective: { type: String, required: true },
     description: { type: String, required: true },
-    status: { type: Number, required: true },
+    status: { type: Number, required: false },
     deadline: { type: String, required: true },
     team: { type: mongoose_1.Schema.Types.ObjectId, required: false, ref: 'Team' },
     created_by: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'User' },

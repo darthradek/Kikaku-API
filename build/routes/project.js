@@ -9,6 +9,7 @@ const router = express_1.default.Router();
 router.post('/create', validateToken_1.default, project_1.default.createProject);
 router.get('', validateToken_1.default, project_1.default.getAllProjects);
 router.get('/:projectId', validateToken_1.default, project_1.default.getProjectById);
+router.get('/createdBy/:created_by', validateToken_1.default, project_1.default.getAllProjectsCreatedByUser);
 router.patch('/update/:projectId', validateToken_1.default, project_1.default.updateProject);
 router.delete('/delete/:projectId', validateToken_1.default, project_1.default.deleteProject);
 module.exports = router;
