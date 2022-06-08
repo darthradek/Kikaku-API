@@ -4,5 +4,5 @@ after((done) => {
     for (var collection in mongoose.connection.collections) {
         mongoose.connection.collections[collection].deleteMany(function () { });
     }
-    return done();
+    done();
 });
