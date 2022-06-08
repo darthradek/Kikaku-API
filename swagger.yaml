@@ -105,7 +105,7 @@ paths:
             tags:
                 - Team
             summary: Get list of all teams
-            description: Retrieves a list of all Teams.
+            description: Retrieves a list of all Teams
             responses:
                 200:
                     description: List of all Teams.
