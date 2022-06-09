@@ -4,7 +4,7 @@ info:
     description: MongoDB ExpressJS NodeJS REST API
     version: 1.0.0
 servers:
-    - url: https://kikaku.herokuapp.com/api
+    - url: https://kikaku-app.herokuapp.com/api
       description: Heroku remote server
     - url: http://localhost:4000/api
       description: Localhost development server
@@ -31,6 +31,52 @@ components:
                     type: string
                 created_by:
                     type: string
+
+        Project:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                objective:
+                    type: string
+                status:
+                    type: number
+                deadline:
+                    type: string
+                team:
+                    type: string
+                created_by:
+                    type: string
+
+        ProjectStage:
+            type: object
+            properties:
+                title:
+                    type: string
+                project_id:
+                    type: string
+
+        Task:
+            type: object
+            properties:
+                title:
+                    type: string
+                status:
+                    type: number
+                isOptional:
+                    type: boolean
+                content:
+                    type: string
+                deadline:
+                    type: string
+                created_by:
+                    type: string
+                members:
+                    type: array
+                    items:
+                        type: string
 
         User:
             type: object
@@ -212,3 +258,313 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Team'
+
+    /projects:
+        get:
+            tags:
+                - Project
+            summary: Get list of all Projects
+            description: Retrieves a list of all Projects
+            responses:
+                200:
+                    description: List of all Projects.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Project'
+
+    /projects/createdBy/{id}:
+        get:
+            tags:
+                - Project
+            summary: Get all projects created by given User Id
+            description: Retrieves a list of specific Projects based on user Id.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB User Id
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Projects retrieved by User Id.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Project'
+    /projects/create:
+        post:
+            tags:
+                - Project
+            summary: Create Project
+            description: Create new Project and start colaboration
+            security:
+                - ApiKeyAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Project'
+
+            responses:
+                201:
+                    description: Project created succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Project'
+
+    /projects/{id}:
+        get:
+            tags:
+                - Project
+            summary: Get Project by Id
+            description: Retrieves a specific Project based on its id.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB Project Id
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Project retrieved by Id.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Project'
+
+        put:
+            tags:
+                - Project
+            summary: Update Project Information
+            description: Updates a specific Project based on its Id
+            security:
+                - ApiKeyAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB Project Id
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Project'
+
+            responses:
+                201:
+                    description: Project updated succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Project'
+
+        delete:
+            tags:
+                - Project
+            summary: Delete Project by Id
+            description: Deletes a specific Project based on it's Id
+            security:
+                - ApiKeyAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB Project Id
+                  schema:
+                      type: string
+
+            responses:
+                201:
+                    description: Project deleted succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Project'
+
+    /projectStages/{id}:
+        get:
+            tags:
+                - ProjectStage
+            summary: Get a list of all Project Stages for given project
+            description: Retrieves a list of all Project Stages for given project
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB Project Id
+                  schema:
+                      type: string
+
+            responses:
+                200:
+                    description: List of all Project Stages for given project.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ProjectStage'
+
+    /projectStage/create:
+        post:
+            tags:
+                - ProjectStage
+            summary: Create new  ProjectStage
+            description: Create new ProjectStage and add tasks
+            security:
+                - ApiKeyAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProjectStage'
+
+            responses:
+                201:
+                    description: Project Stage created succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProjectStage'
+
+        put:
+            tags:
+                - ProjectStage
+            summary: Update ProjectStage Information
+            description: Updates a specific ProjectStage based on its Id
+            security:
+                - ApiKeyAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB ProjectStage Id
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProjectStage'
+
+            responses:
+                201:
+                    description: ProjectStage updated succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProjectStage'
+
+        delete:
+            tags:
+                - ProjectStage
+            summary: Delete ProjectStage by Id
+            description: Deletes a specific ProjectStage based on it's Id
+            security:
+                - ApiKeyAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB ProjectStage Id
+                  schema:
+                      type: string
+
+            responses:
+                201:
+                    description: ProjectStage deleted succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ProjectStage'
+
+    /tasks/create:
+        post:
+            tags:
+                - Task
+            summary: Create new  Task
+            description: Create new Task and assign team members
+            security:
+                - ApiKeyAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Task'
+
+            responses:
+                201:
+                    description: Task created succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+
+        put:
+            tags:
+                - Task
+            summary: Update Task Information
+            description: Updates a specific Task based on its Id
+            security:
+                - ApiKeyAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB Task Id
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Task'
+
+            responses:
+                201:
+                    description: Task updated succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
+
+        delete:
+            tags:
+                - Task
+            summary: Delete Task by Id
+            description: Deletes a specific Task based on it's Id
+            security:
+                - ApiKeyAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  description: MongoDB Task Id
+                  schema:
+                      type: string
+
+            responses:
+                201:
+                    description: Task deleted succesfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Task'
